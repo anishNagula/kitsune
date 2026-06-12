@@ -1,0 +1,14 @@
+[workspace]
+resolver = "2"
+
+members = [
+    "crates/tensor",
+    "crates/simd",
+    "crates/gguf",
+    "crates/tokenizer",
+    "crates/runtime",
+    "crates/transformer",
+    "crates/kv_cache",
+    "crates/sampler",
+    "crates/cli",
+]
