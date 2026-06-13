@@ -19,6 +19,12 @@ impl Tensor {
         Ok(Self {data, shape })
     }
 
+    // get tensor
+    fn get(&self, row: usize, col: usize) -> f32 {
+        let cols = self.shape[1];
+        self.data[row * cols + col]
+    }
+
     // flood with 0's
     pub fn zeros(shape: Vec<usize>) -> Self {
         let size: usize = shape.iter().product();
@@ -77,7 +83,7 @@ impl Tensor {
     }
 
     // check if same shape
-    pub fn same_shape(&self, other: &Tensor) -> Result<(), TensorError> {
+    fn same_shape(&self, other: &Tensor) -> Result<(), TensorError> {
         if self.shape != other.shape {
             return Err(TensorError::ShapeMismatch);
         }
@@ -136,6 +142,41 @@ impl Tensor {
         })
     }
 
+    pub fn matmul(&self, other: &Tensor) -> Result<Self, TensorError> {
+        if self.shape.len() != 2 || other.shape.len() != 2 {
+            return Err(TensorError::InvalidShape);
+        }
+
+        let m = self.shape[0];
+        let k = self.shape[1];
+
+        let k2 = other.shape[0];
+        let n  = other.shape[1];
+
+        if k != k2 {
+            return Err(TensorError::ShapeMismatch);
+        }
+
+        let mut result = vec![0.0; m * n];
+
+        for i in 0..m {
+            for j in 0..n {
+                let mut sum = 0.0;
+
+                for p in 0..k {
+                    sum += self.get(i, p) * other.get(p, j);
+                }
+
+                result[i * n + j] = sum;
+            }
+        }
+
+        Ok(Self {
+            data: result,
+            shape: vec![m, n],
+        })
+    }
+
 
 
 
@@ -154,5 +195,6 @@ impl Tensor {
 
     pub fn data(&self) -> &[f32] {
         &self.data
-    }
+    } 
+
 }

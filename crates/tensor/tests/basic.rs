@@ -132,3 +132,42 @@ fn mul_tensors() {
         &[4.0, 10.0, 18.0]
     );
 }
+
+#[test]
+fn matmul_2x2() {
+    let a = Tensor::new(
+        vec![
+            1.0, 2.0,
+            3.0, 4.0,
+        ],
+        vec![2, 2],
+    )
+    .unwrap();
+
+    let b = Tensor::new(
+        vec![
+            5.0, 6.0,
+            7.0, 8.0,
+        ],
+        vec![2, 2],
+    )
+    .unwrap();
+
+    let c = a.matmul(&b).unwrap();
+
+    assert_eq!(
+        c.data(),
+        &[
+            19.0, 22.0,
+            43.0, 50.0,
+        ]
+    );
+}
+
+#[test]
+fn matmul_shape_mismatch() {
+    let a = Tensor::ones(vec![2, 3]);
+    let b = Tensor::ones(vec![2, 2]);
+
+    assert!(a.matmul(&b).is_err());
+}
