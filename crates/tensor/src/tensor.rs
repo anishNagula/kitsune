@@ -177,11 +177,39 @@ impl Tensor {
         })
     }
 
+    pub fn add_scalar(&self, scalar: f32) -> Self {
+        let data = self
+            .data
+            .iter()
+            .map(|x| x + scalar)
+            .collect();
 
+        Self {
+            data,
+            shape: self.shape.clone(),
+        }
+    }
 
+    pub fn mul_scalar(&self, scalar: f32) -> Self {
+        let data = self
+            .data
+            .iter()
+            .map(|x| x * scalar)
+            .collect();
 
+        Self {
+            data,
+            shape: self.shape.clone(),
+        }
+    }
 
+    pub fn sum(&self) -> f32 {
+        self.data.iter().sum()
+    }
 
+    pub fn mean(&self) -> f32 {
+        self.sum() / self.data.len() as f32
+    }
 
 
     // ~~~ UTIL FUNCTIONS ~~~

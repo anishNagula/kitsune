@@ -171,3 +171,57 @@ fn matmul_shape_mismatch() {
 
     assert!(a.matmul(&b).is_err());
 }
+
+#[test]
+fn add_scalar() {
+    let t = Tensor::new(
+        vec![1.0, 2.0, 3.0],
+        vec![3],
+    )
+    .unwrap();
+
+    let result = t.add_scalar(5.0);
+
+    assert_eq!(
+        result.data(),
+        &[6.0, 7.0, 8.0]
+    );
+}
+
+#[test]
+fn mul_scalar() {
+    let t = Tensor::new(
+        vec![1.0, 2.0, 3.0],
+        vec![3],
+    )
+    .unwrap();
+
+    let result = t.mul_scalar(2.0);
+
+    assert_eq!(
+        result.data(),
+        &[2.0, 4.0, 6.0]
+    );
+}
+
+#[test]
+fn tensor_sum() {
+    let t = Tensor::new(
+        vec![1.0, 2.0, 3.0, 4.0],
+        vec![4],
+    )
+    .unwrap();
+
+    assert_eq!(t.sum(), 10.0);
+}
+
+#[test]
+fn tensor_mean() {
+    let t = Tensor::new(
+        vec![1.0, 2.0, 3.0, 4.0],
+        vec![4],
+    )
+    .unwrap();
+
+    assert_eq!(t.mean(), 2.5);
+}
