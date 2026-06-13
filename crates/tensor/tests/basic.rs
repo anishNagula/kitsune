@@ -66,3 +66,69 @@ fn transpose_tensor() {
 
     assert_eq!(transposed.shape(), &[2,2]);
 }
+
+#[test]
+fn add_tensors() {
+    let a = Tensor::new(
+        vec![1.0, 2.0, 3.0],
+        vec![3],
+    )
+    .unwrap();
+
+    let b = Tensor::new(
+        vec![4.0, 5.0, 6.0],
+        vec![3],
+    )
+    .unwrap();
+
+    let c = a.add(&b).unwrap();
+
+    assert_eq!(
+        c.data(),
+        &[5.0, 7.0, 9.0]
+    );
+}
+
+#[test]
+fn sub_tensors() {
+    let a = Tensor::new(
+        vec![5.0, 7.0, 9.0],
+        vec![3],
+    )
+    .unwrap();
+
+    let b = Tensor::new(
+        vec![4.0, 5.0, 6.0],
+        vec![3],
+    )
+    .unwrap();
+
+    let c = a.sub(&b).unwrap();
+
+    assert_eq!(
+        c.data(),
+        &[1.0, 2.0, 3.0]
+    );
+}
+
+#[test]
+fn mul_tensors() {
+    let a = Tensor::new(
+        vec![1.0, 2.0, 3.0],
+        vec![3],
+    )
+    .unwrap();
+
+    let b = Tensor::new(
+        vec![4.0, 5.0, 6.0],
+        vec![3],
+    )
+    .unwrap();
+
+    let c = a.mul(&b).unwrap();
+
+    assert_eq!(
+        c.data(),
+        &[4.0, 10.0, 18.0]
+    );
+}

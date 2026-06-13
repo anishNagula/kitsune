@@ -7,6 +7,8 @@ pub struct Tensor {
 }
 
 impl Tensor {
+
+    // new tensor
     pub fn new(data: Vec<f32>, shape: Vec<usize>) -> Result<Self, TensorError> {
         let expected: usize = shape.iter().product();
 
@@ -17,6 +19,7 @@ impl Tensor {
         Ok(Self {data, shape })
     }
 
+    // flood with 0's
     pub fn zeros(shape: Vec<usize>) -> Self {
         let size: usize = shape.iter().product();
 
@@ -26,6 +29,7 @@ impl Tensor {
         }
     }
 
+    // flood with 1's
     pub fn ones(shape: Vec<usize>) -> Self {
         let size: usize = shape.iter().product();
 
@@ -35,6 +39,7 @@ impl Tensor {
         }
     }
 
+    // create a new tensore by cloning data and mod shape
     pub fn reshape(&self, shape: Vec<usize>) -> Result<Self, TensorError> {
         let expected: usize = shape.iter().product();
 
@@ -48,6 +53,7 @@ impl Tensor {
         })
     }
 
+    // new tensor of transpose
     pub fn transpose(&self) -> Result<Self, TensorError> {
         if self.shape.len() != 2 {
             return Err(TensorError::InvalidShape);
@@ -70,6 +76,74 @@ impl Tensor {
         })
     }
 
+    // check if same shape
+    pub fn same_shape(&self, other: &Tensor) -> Result<(), TensorError> {
+        if self.shape != other.shape {
+            return Err(TensorError::ShapeMismatch);
+        }
+
+        Ok(())
+    }
+
+
+    // ~~~ MATH FUNCTIONS ~~~
+
+    pub fn add(&self, other: &Tensor) -> Result<Self, TensorError> {
+        self.same_shape(other)?;
+
+        let data = self
+            .data
+            .iter()
+            .zip(other.data.iter())
+            .map(|(a, b)| a + b)
+            .collect();
+
+        Ok(Self {
+            data,
+            shape: self.shape.clone(),
+        })
+    }
+
+    pub fn sub(&self, other: &Tensor) -> Result<Self, TensorError> {
+        self.same_shape(other)?;
+
+        let data = self
+            .data
+            .iter()
+            .zip(other.data.iter())
+            .map(|(a, b)| a - b)
+            .collect();
+
+        Ok(Self {
+            data,
+            shape: self.shape.clone(),
+        })
+    }
+
+    pub fn mul(&self, other: &Tensor) -> Result<Self, TensorError> {
+        self.same_shape(other)?;
+
+        let data = self
+            .data
+            .iter()
+            .zip(other.data.iter())
+            .map(|(a, b)| a * b)
+            .collect();
+
+        Ok(Self {
+            data,
+            shape: self.shape.clone(),
+        })
+    }
+
+
+
+
+
+
+
+
+    // ~~~ UTIL FUNCTIONS ~~~
     pub fn shape(&self) -> &[usize] {
         &self.shape
     }
