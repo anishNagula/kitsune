@@ -35,6 +35,41 @@ impl Tensor {
         }
     }
 
+    pub fn reshape(&self, shape: Vec<usize>) -> Result<Self, TensorError> {
+        let expected: usize = shape.iter().product();
+
+        if expected != self.data.len() {
+            return Err(TensorError::InvalidShape);
+        }
+
+        Ok(Self {
+            data: self.data.clone(),
+            shape,
+        })
+    }
+
+    pub fn transpose(&self) -> Result<Self, TensorError> {
+        if self.shape.len() != 2 {
+            return Err(TensorError::InvalidShape);
+        }
+
+        let rows = self.shape[0];
+        let cols = self.shape[1];
+
+        let mut result = vec![0.0; self.data.len()];
+
+        for r in 0..rows {
+            for c in 0..cols {
+                result[c * rows + r] = self.data[r * cols + c];
+            }
+        }
+
+        Ok(Self {
+            data: result,
+            shape: vec![cols, rows],
+        })
+    }
+
     pub fn shape(&self) -> &[usize] {
         &self.shape
     }
