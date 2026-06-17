@@ -76,3 +76,28 @@ fn transpose_matrix() {
         ]
     );
 }
+
+#[cfg(target_arch = "aarch64")]
+#[test]
+fn matmul_neon_matches_scalar() {
+    use simd::neon::matmul_neon;
+    use simd::scalar::matmul_scalar;
+
+    let a = vec![
+        1.0, 2.0,
+        3.0, 4.0,
+    ];
+
+    let b = vec![
+        5.0, 6.0,
+        7.0, 8.0,
+    ];
+
+    let scalar =
+        matmul_scalar(&a, &b, 2, 2, 2);
+
+    let neon =
+        matmul_neon(&a, &b, 2, 2, 2);
+
+    assert_eq!(scalar, neon);
+}

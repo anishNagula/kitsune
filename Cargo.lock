@@ -465,6 +465,9 @@ dependencies = [
 [[package]]
 name = "simd"
 version = "0.1.0"
+dependencies = [
+ "criterion",
+]
 
 [[package]]
 name = "slab"
